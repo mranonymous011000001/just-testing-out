@@ -178,18 +178,18 @@ Virtualization can make some operations take a bit longer in a VM than on a phys
     *   Sandboxes and VMs used for analysis might have simulated network conditions with unusually low or consistent latency. Malware can measure network latency by sending pings or making network requests and analyzing the response times.
 
 {{% steps %}}
-### {{< icon "one" >}} Check for Virtualization Artifacts
+### Check for Virtualization Artifacts
 
 Malware starts by checking for telltale signs of virtualization, such as specific files, registry entries, or hardware characteristics that are commonly associated with virtual machines.
 
-### {{< icon "two" >}} Perform Timing Analysis
+### Perform Timing Analysis
 
 If the initial checks are inconclusive, the malware might proceed to perform timing-based analysis. This involves measuring the execution time of certain operations or instructions and comparing them against expected values for physical machines.
 
-### {{< icon "three" >}} Analyze Network Behavior
+### Analyze Network Behavior
 Malware may also check for internet connectivity and also analyze network latency.
 
-### {{< icon "four" >}} Make a Decision
+### Make a Decision
 
 Based on the results of the checks, the malware makes a decision. If it determines that it's likely running in a virtualized environment, it might alter its behavior, remain dormant, or terminate itself to avoid detection. If not, it will continue on it's normal execution path.
 {{% /steps %}}
