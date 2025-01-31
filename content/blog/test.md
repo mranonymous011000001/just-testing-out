@@ -30,6 +30,9 @@ Understanding how malware evades detection is important for everyone in cybersec
 
 Let's start by understanding what sandboxes and virtual machines are and why they're used in cybersecurity.
 
+
+---
+
 ### Virtual Machines (VMs)
 
 Imagine having multiple computers inside your main computer. That's what a virtual machine lets you do. A VM is like a computer simulated by software, complete with its own operating system, storage, and applications. This is possible because of **virtualization**, a technology that allows one physical computer (the "host") to run several separate virtual machines (the "guests"). Some popular virtualization software includes VMware, VirtualBox, and Hyper-V.
@@ -40,6 +43,8 @@ Imagine having multiple computers inside your main computer. That's what a virtu
 *   **Vulnerability Testing:** Security experts use VMs to test for weaknesses in software without risking their primary computers.
 *   **Security Research:** VMs allow researchers to create controlled environments for studying operating systems, networks, and security.
 
+---
+
 ### Sandboxes
 
 A sandbox is a more specialized type of isolated environment. While a VM simulates an entire computer, a sandbox usually focuses on isolating a specific program or process. Think of it as a "secure container" within your operating system. The sandbox limits the program's access to system resources, like files, memory, and network connections, preventing it from harming the main system.
@@ -48,6 +53,8 @@ A sandbox is a more specialized type of isolated environment. While a VM simulat
 
 *   **Full-System Emulation:** These sandboxes simulate an entire computer system, including hardware and the operating system. QEMU is an example. They offer strong isolation but can use a lot of resources.
 *   **API-Level Sandboxes:** These are lighter and work by watching and controlling the system calls a program makes. They filter or change these calls to prevent harmful actions. Cuckoo Sandbox is a common example used for analyzing malware.
+
+---
 
 **Why are sandboxes used in cybersecurity?**
 
@@ -166,7 +173,12 @@ Virtualization can make some operations take a bit longer in a VM than on a phys
 *   **Network Latency:**
     *   Sandboxes and VMs used for analysis might have simulated network conditions with unusually low or consistent latency. Malware can measure network latency by sending pings or making network requests and analyzing the response times.
 
+---
+
+
+
 {{% steps %}}
+
 ### Check for Virtualization Artifacts
 
 Malware starts by checking for telltale signs of virtualization, such as specific files, registry entries, or hardware characteristics that are commonly associated with virtual machines.
@@ -221,7 +233,7 @@ Sandboxes often run malware automatically without real user interaction. Malware
 *   **Mouse Movement:** Malware can check if the mouse has moved recently. In a sandbox, the mouse might stay still unless the sandbox simulates movement.
 *   **Keyboard Input:** Malware can check if any keys have been pressed. In an automated sandbox, there might be no keyboard input.
 *   **Active Windows:** Malware can check if any windows have been opened, closed, or resized. In a sandbox, the malware's window might be the only one, and it might stay the same.
-
+  
 ### 3. System Uptime Checks
 
 Sandboxes are usually short-lived, created just to analyze a piece of malware. Malware can check how long the system has been running (the uptime) and guess it's in a sandbox if the uptime is very short.
