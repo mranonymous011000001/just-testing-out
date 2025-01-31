@@ -132,17 +132,6 @@ Malware can look for clues that reveal the presence of virtualization software.
       {{< /tab >}}
     {{< /tabs >}}
 
-    {{< filetree/container >}}
-      {{< filetree/folder name="C:" >}}
-        {{< filetree/folder name="Windows" >}}
-          {{< filetree/folder name="System32" >}}
-            {{< filetree/folder name="drivers" state="open" >}}
-              {{< filetree/file name="vmci.sys" >}}
-            {{< /filetree/folder >}}
-          {{< /filetree/folder >}}
-        {{< /filetree/folder >}}
-      {{< /filetree/folder >}}
-    {{< /filetree/container >}}
 
 *   **MAC Addresses and Device Names:**
     *   MAC addresses are unique identifiers for network interfaces. Virtualization vendors have specific ranges of MAC addresses for their VMs. For example, addresses starting with `00:50:56` are often used by VMware, and those starting with `08:00:27` are often used by VirtualBox.
