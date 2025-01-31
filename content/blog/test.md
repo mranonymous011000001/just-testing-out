@@ -17,6 +17,7 @@ excludeSearch: true
 
 
 
+
 # How Advanced Malware Evades Sandboxes and Virtual Machines
 
 ## {{< icon "book-open" >}} Introduction
@@ -376,24 +377,17 @@ The malware executes the injected code within the target process, often by creat
 {{< /details >}}
 
 {{< cards >}}
-  {{< card title="System Artifacts" icon="search" >}}
-  Malware checks for registry keys, files, MAC addresses, device names, CPU details, BIOS/firmware, hard drive serial numbers, RAM, processors, and virtualization guest additions to detect virtual environments.
-  {{< /card >}}
-  {{< card title="Timing-Based Analysis" icon="clock" >}}
-  Malware uses timing differences, such as delays in API calls or network latency, to determine if it's running in a virtualized environment.
-  {{< /card >}}
-  {{< card title="Sandbox Detection" icon="search-circle" >}}
-  Malware identifies sandboxes by checking running processes, looking for a lack of user interaction, and examining system uptime.
-  {{< /card >}}
-  {{< card title="Advanced Evasion" icon="lightning-bolt" >}}
-  Techniques like self-encryption, packing, debugger detection, delayed execution, code obfuscation, API hammering, and process injection are used to evade detection.
-  {{< /card >}}
+  {{< card link="#" title="System Artifacts" icon="search" subtitle="Checks for registry keys, files, MAC addresses, etc." >}}
+  {{< card link="#" title="Timing-Based Analysis" icon="clock" subtitle="Uses timing differences to detect virtualization." >}}
+  {{< card link="#" title="Sandbox Detection" icon="search-circle" subtitle="Identifies sandboxes via process checks and user interaction." >}}
+  {{< card link="#" title="Advanced Evasion" icon="lightning-bolt" subtitle="Employs encryption, anti-debugging, and more." >}}
 {{< /cards >}}
 
 ## {{< icon "support" >}} Conclusion
 
 Malware authors use a variety of increasingly sophisticated techniques to detect and evade sandboxes and virtual machines. By understanding these methods, cybersecurity professionals can develop better defenses and stay ahead of evolving threats. Continuous learning and adaptation are crucial in the ever-changing landscape of cybersecurity. Staying informed about the latest evasion techniques helps us build more robust security systems and protect our digital world from malicious actors. Remember, the field of cybersecurity is constantly evolving, and staying informed is key to effectively combating these threats.
 
-{{< callout type="warning" >}}
+{{< callout type="warning" emoji="🚨" >}}
 **Disclaimer:** The code examples provided in this blog post are for educational purposes only. They demonstrate techniques used by malware to detect virtualized environments but should not be used for malicious purposes. Always use caution when running code from unknown sources, and never run potentially harmful code on a production system.
 {{< /callout >}}
+
