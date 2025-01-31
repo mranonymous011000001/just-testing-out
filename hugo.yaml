@@ -53,5 +53,5 @@ params:
     displayPoweredBy: true
 
   editURL:
-    enable: true
+    enable: false
     base: "https://github.com/BlackTechX011/Blextra-starter-template/edit/main/content"
