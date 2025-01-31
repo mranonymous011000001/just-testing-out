@@ -21,6 +21,10 @@ menu:
     - name: Docs
       pageRef: /docs
       weight: 1
+    - identifier: blog
+      name: Blog
+      pageRef: /blog
+      weight: 3
     - name: About
       pageRef: /about
       weight: 2
