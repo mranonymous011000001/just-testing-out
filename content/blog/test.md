@@ -31,7 +31,7 @@ Understanding how malware evades detection is important for everyone in cybersec
 Let's start by understanding what sandboxes and virtual machines are and why they're used in cybersecurity.
 
 
----
+
 
 ### Virtual Machines (VMs)
 
@@ -43,7 +43,7 @@ Imagine having multiple computers inside your main computer. That's what a virtu
 *   **Vulnerability Testing:** Security experts use VMs to test for weaknesses in software without risking their primary computers.
 *   **Security Research:** VMs allow researchers to create controlled environments for studying operating systems, networks, and security.
 
----
+
 
 ### Sandboxes
 
@@ -54,7 +54,7 @@ A sandbox is a more specialized type of isolated environment. While a VM simulat
 *   **Full-System Emulation:** These sandboxes simulate an entire computer system, including hardware and the operating system. QEMU is an example. They offer strong isolation but can use a lot of resources.
 *   **API-Level Sandboxes:** These are lighter and work by watching and controlling the system calls a program makes. They filter or change these calls to prevent harmful actions. Cuckoo Sandbox is a common example used for analyzing malware.
 
----
+
 
 **Why are sandboxes used in cybersecurity?**
 
@@ -173,7 +173,7 @@ Virtualization can make some operations take a bit longer in a VM than on a phys
 *   **Network Latency:**
     *   Sandboxes and VMs used for analysis might have simulated network conditions with unusually low or consistent latency. Malware can measure network latency by sending pings or making network requests and analyzing the response times.
 
----
+
 
 
 
