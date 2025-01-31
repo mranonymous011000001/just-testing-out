@@ -359,19 +359,19 @@ Process injection is where malware injects its code into a legitimate process to
 ## Process Injection Steps
 
 {{% steps %}}
-### {{< icon "one" >}} Target Selection
+### Target Selection
 The malware selects a target process into which it will inject its malicious code.
 
-### {{< icon "two" >}} Open Target Process
+### Open Target Process
 The malware uses functions like `OpenProcess` (on Windows) to obtain a handle to the target process.
 
-### {{< icon "three" >}} Allocate Memory
+### Allocate Memory
 It allocates memory within the target process using functions like `VirtualAllocEx`.
 
-### {{< icon "four" >}} Write Code
+### Write Code
 The malware writes its malicious code into the allocated memory space of the target process using `WriteProcessMemory`.
 
-### {{< icon "five" >}} Execute Code
+### Execute Code
 The malware executes the injected code within the target process, often by creating a new thread with `CreateRemoteThread` or manipulating an existing thread.
 {{% /steps %}}
 {{< /details >}}
