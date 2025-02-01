@@ -88,106 +88,209 @@ Since sandboxes and VMs are the primary tools for malware analysis, attackers de
 
 ## {{< icon "search" >}} Techniques for Detecting Virtualized Environments
 
-Malware employs various techniques to determine if it is operating in a VM. Below, we detail several detection methods.
+Modern malware employs several strategies to determine whether it is running inside a virtual machine (VM) rather than on physical hardware. Here, we break down these methods in detail.
 
-### Step-by-Step Virtualization Detection
+### 1. Inspecting System Artifacts
 
-{{% steps %}}
-1. **Inspect System Artifacts:**  
-   - **Registry Keys & Files:** Virtualization software typically leaves traces. For example, VMware installs `vmci.sys` in `C:\Windows\System32\drivers\`.
-   - **Device Names & MAC Addresses:** Virtual network adapters often have known MAC address prefixes (e.g., `00:50:56` for VMware).
-2. **Timing-Based Analysis:**  
-   - **CPU Instructions:** Using instructions like `RDTSC` to measure execution time and detect virtualization overhead.
-   - **API Call Latency:** Inconsistencies in execution time can be an indicator.
-3. **Hardware Checks:**  
-   - **CPU Vendor & BIOS Information:** Unusual values like `KVMKVMKVM` or “Microsoft Hv” may be reported.
-   - **Resource Configuration:** Limited resources (e.g., low RAM or single-core CPUs) can suggest a VM.
-4. **Guest Additions Detection:**  
-   - Tools such as VMware Tools or VirtualBox Guest Additions are common in virtualized systems.
-{{% /steps %}}
+**System artifacts** are the remnants or traces left behind by virtualization software. Malware authors use these clues to deduce the environment type.
 
-### Example: Detecting VMware Using Tabs (Python & PowerShell)
+#### A. Registry Keys and Files
+- **Windows Registry Keys:**  
+  Virtualization software often creates specific registry entries that serve as signatures. For instance, VMware might create keys or values that reference its tools.
+- **Driver and System Files:**  
+  Files such as `vmci.sys` in the `C:\Windows\System32\drivers\` directory are common indicators of VMware. Similar files exist for VirtualBox and other hypervisors.
 
-{{< tabs items="Python,PowerShell" >}}
-  {{< tab >}}
-```python
-import os
+#### B. MAC Addresses and Device Names
+- **MAC Address Prefixes:**  
+  Virtual network adapters usually have known MAC address prefixes. For example, VMware commonly uses prefixes like `00:50:56`, while VirtualBox might use `08:00:27`.  
+- **Device Naming Conventions:**  
+  The names of network interfaces or system devices may contain strings like “VMware” or “VirtualBox” which are strong hints.
 
-def is_vmware():
-    """
-    Check if the system is running within a VMware virtual machine
-    by detecting a known VMware driver file.
-    """
-    try:
-        if os.path.exists("C:\\Windows\\System32\\drivers\\vmci.sys"):
-            print("VMware detected!")
-            return True
-    except Exception as e:
-        print(f"Error checking for VMware driver: {e}")
-    return False
+#### C. CPU, BIOS, and Hardware Signatures
+- **CPU Information:**  
+  Virtual environments can report unusual CPU vendor strings (e.g., "KVMKVMKVM" or "Microsoft Hv").  
+- **BIOS Information:**  
+  BIOS or firmware details in a VM may differ from those of a physical machine, often showing default or vendor-specific values.
+- **Disk Identifiers:**  
+  Virtual hard drives might have serial numbers or model identifiers that follow a predictable pattern compared to physical drives.
 
-if is_vmware():
-    exit()
-```
-  {{< /tab >}}
-  {{< tab >}}
-```powershell
-function Test-IsVmware {
-  # Check for the presence of VMware's vmci.sys driver file.
-  if (Test-Path -Path "C:\Windows\System32\drivers\vmci.sys") {
-    Write-Host "VMware detected!" -ForegroundColor Cyan
-    return $true
-  }
-  return $false
-}
+### 2. Timing-Based Analysis
 
-if (Test-IsVmware) { exit }
-```
-  {{< /tab >}}
-{{< /tabs >}}
+Timing analysis involves measuring the execution time of certain operations and comparing them to known values on physical hardware.
+
+#### A. CPU Instruction Timing
+- **RDTSC Instruction:**  
+  The `RDTSC` (Read Time-Stamp Counter) instruction measures the number of clock cycles since reset. Virtual machines can introduce latency due to overhead, so comparing the measured cycles against expected values may indicate virtualization.
+- **Execution Delays:**  
+  Malware can time specific code blocks. Longer-than-expected execution times may signal the presence of a VM.
+
+#### B. API Call Latency
+- **System Call Overhead:**  
+  Some system calls may have inherent delays in a virtualized environment. By measuring the latency of these calls (for example, file I/O operations), malware can infer if it is running on a VM.
+  
+#### C. Network Latency
+- **Simulated Network Conditions:**  
+  Virtual environments might simulate network interfaces with uniform or reduced latency. Malware can send network requests (e.g., ICMP pings) and analyze response times to determine if they match the profile of a physical network.
+
+### 3. Resource Configuration Checks
+
+Virtualized environments are often allocated a limited set of resources for analysis purposes.
+
+#### A. Hardware Resource Availability
+- **RAM and CPU Cores:**  
+  A VM used for malware analysis might be configured with minimal RAM (e.g., less than 2GB) or a single CPU core. Malware can check system specifications and compare them against typical physical configurations.
+- **Disk Space and I/O Capabilities:**  
+  The virtual disk’s performance and capacity might differ from a high-performance physical drive. Such differences may be detected by stress-testing disk I/O.
+
+### 4. Detection of Guest Additions and Virtualization Tools
+
+Guest additions are software packages installed within VMs to improve integration and performance.
+
+- **Presence of Guest Tools:**  
+  VirtualBox Guest Additions or VMware Tools often leave behind specific files, services, or drivers. Their existence is a strong indicator of virtualization.
+- **Service and Process Checks:**  
+  Malware may enumerate running services or processes to detect names related to these guest tools.
 
 ---
 
 ## {{< icon "search-circle" >}} Techniques for Sandbox Detection
 
-In addition to VM detection, malware often uses methods to determine if it is running in a sandbox.
+Sandboxes are specialized environments designed to analyze the behavior of individual applications. Malware must also detect if it is being executed in such a controlled setting. Here are the main techniques in depth:
 
-### Step-by-Step Sandbox Detection
+### 1. Process Inspection
 
-{{% steps %}}
-1. **Process Scanning:**  
-   - Identify processes related to sandbox software (e.g., "cuckoo", "anubis", "joebox").
-2. **User Interaction Analysis:**  
-   - Lack of mouse movement, keyboard input, or window activity can indicate an automated environment.
-3. **System Uptime Check:**  
-   - A very short system uptime (e.g., under 5 minutes) often signifies a sandbox created solely for analysis.
-4. **Environmental Verification:**  
-   - Check for anomalies in network connectivity and display configuration.
-{{% /steps %}}
+Malware scans the list of active processes to search for applications commonly associated with sandbox analysis.
 
-### Example: Checking for Short System Uptime
+#### A. Known Sandbox Process Names
+- **Common Sandbox Tools:**  
+  Many sandbox solutions run helper processes with identifiable names (e.g., "cuckoo", "joebox", "anubis", "threatanalyzer", "vmsandbox").  
+- **Process Enumeration:**  
+  By iterating through the list of running processes (using libraries like Python’s `psutil`), malware can compare each process name against a list of known sandbox tools. A match signals that the analysis environment might be a sandbox.
+
+#### B. Hidden or System Processes
+- **Discrepancies in Process Listings:**  
+  Some sandboxes may not display all processes normally, or they might use virtualized process listings. Malware can compare expected process counts or names to detect anomalies.
+
+### 2. User Interaction Analysis
+
+Most automated sandboxes are non-interactive environments. Malware can detect the absence of genuine user input.
+
+#### A. Mouse Movement and Keyboard Input
+- **Idle Input:**  
+  Malware can monitor for periods of inactivity. If there is no mouse movement or keyboard input over an extended period, this suggests an automated sandbox environment.
+- **Simulated Inputs:**  
+  Some advanced sandboxes might simulate minimal inputs; however, the patterns often differ from natural human behavior. Timing and randomness in input events can be analyzed for authenticity.
+
+#### B. Active Window and Desktop Activity
+- **Static Desktop Environment:**  
+  In a typical user session, multiple windows are active, and applications are dynamically resized or moved. A single static window or a desktop without expected activity can indicate sandbox operation.
+- **Focus and Interaction Metrics:**  
+  The absence of focus changes or input events can be flagged as suspicious.
+
+### 3. Uptime Verification
+
+Many sandboxes are created just for the short-term analysis of a sample.
+
+#### A. Short System Uptime
+- **Boot Time Analysis:**  
+  Malware can retrieve the system boot time and compute the uptime. An uptime of only a few minutes (e.g., less than 5 minutes) strongly indicates a sandbox.
+- **Conditional Behavior Based on Uptime:**  
+  If the uptime is below a certain threshold, the malware may choose to delay its malicious behavior to avoid detection during the analysis period.
+
+### 4. Environmental and Configuration Checks
+
+Sandbox environments may have configuration quirks that differ from standard consumer or enterprise systems.
+
+#### A. Network Connectivity
+- **Restricted or Simulated Internet Access:**  
+  Some sandboxes simulate network conditions or limit connectivity to prevent malware from communicating with its command and control (C2) servers. Malware can test for real Internet connectivity or check if DNS resolution behaves normally.
+  
+#### B. Screen Resolution and Display Settings
+- **Non-Standard Resolutions:**  
+  Virtual environments often use default or low screen resolutions that might not match the typical resolutions used on physical machines.  
+- **Graphics Adapter Information:**  
+  Checking for generic or default display adapter information can be another clue.
+
+#### C. CPU and Memory Fingerprinting
+- **Comparative Performance Metrics:**  
+  Measuring CPU performance and available memory against expected values for a physical machine can help in detecting a sandbox.  
+- **Benchmarking Tasks:**  
+  Malware might perform simple arithmetic or data processing tasks to gauge performance. A significant deviation may indicate a constrained environment.
+
+---
+
+## Detailed Code Examples and Flow
+
+To illustrate the above methods, consider the following examples.
+
+### Example: Detailed Python Code for Process Inspection (Sandbox Detection)
+
+```python
+import psutil
+
+def detect_sandbox_processes():
+    """
+    Scan running processes to identify any known sandbox analysis tools.
+    Returns True if a sandbox-related process is found.
+    """
+    sandbox_indicators = ["cuckoo", "joebox", "anubis", "threatanalyzer", "vmsandbox", "detonate"]
+    try:
+        for proc in psutil.process_iter(attrs=['name']):
+            proc_name = proc.info.get('name', '').lower()
+            for indicator in sandbox_indicators:
+                if indicator in proc_name:
+                    print(f"Sandbox process detected: {proc_name}")
+                    return True
+    except Exception as e:
+        print(f"Error scanning processes: {e}")
+    return False
+
+if detect_sandbox_processes():
+    exit()
+```
+
+### Example: Detailed Python Code for Uptime Verification
 
 ```python
 import psutil
 import time
 
-def is_short_uptime():
+def check_system_uptime(threshold=300):
     """
-    Determines if the system uptime is suspiciously short, which may suggest a sandbox environment.
+    Checks if the system uptime is below a specified threshold.
+    If uptime is below the threshold (in seconds), returns True.
     """
     try:
         boot_time = psutil.boot_time()
-        uptime = time.time() - boot_time
-        if uptime < 300:  # Uptime under 5 minutes
-            print("Sandbox environment detected!")
+        current_uptime = time.time() - boot_time
+        print(f"System uptime: {current_uptime} seconds")
+        if current_uptime < threshold:
+            print("Short uptime detected: likely a sandbox environment.")
             return True
     except Exception as e:
-        print(f"Uptime check error: {e}")
+        print(f"Error checking uptime: {e}")
     return False
 
-if is_short_uptime():
+if check_system_uptime():
     exit()
 ```
+
+### Example: Detailed Flowchart of Sandbox Detection Process
+
+```mermaid
+%% Detailed Flowchart: Sandbox Detection Process
+flowchart TD
+    A[Start Analysis] --> B{Are Sandbox Processes Detected?}
+    B -- Yes --> C[Flag as Sandbox]
+    B -- No --> D{Is User Input Absent?}
+    D -- Yes --> E{Is System Uptime < Threshold?}
+    E -- Yes --> F[Flag as Sandbox]
+    E -- No --> G[Proceed with Normal Execution]
+    D -- No --> G
+```
+
+*Diagram 2: In-Depth Flow of Sandbox Detection*
+
 
 ---
 
