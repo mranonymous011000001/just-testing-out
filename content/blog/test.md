@@ -268,7 +268,9 @@ Modern malware implements multiple layers of evasion. Beyond detecting VMs and s
 
 ### Step-by-Step Advanced Evasion Techniques
 
+
 {{% steps %}}
+
 1. **Self-Encryption and Packing:**  
    - Encrypt code so it appears as gibberish until runtime decryption occurs.
 2. **Debugger Detection:**  
@@ -280,6 +282,7 @@ Modern malware implements multiple layers of evasion. Beyond detecting VMs and s
 5. **API Hammering & Process Injection:**  
    - Rapidly call system APIs to obscure behavior.
    - Inject code into trusted processes using methods like `VirtualAllocEx`, `WriteProcessMemory`, and `CreateRemoteThread`.
+
 {{% /steps %}}
 
 ### Example: Debugger Detection in Python
@@ -358,7 +361,6 @@ When analyzing malware or designing countermeasures, adhere to these best practi
 
 Malware evasion techniques are continually advancing, creating a challenging landscape for cybersecurity professionals. By understanding how malware detects and bypasses sandboxes and virtual machines, you can develop stronger, more resilient defenses.
 
-Adopting a layered analysis approach, staying current with the latest research, and rigorously testing your environments are crucial steps in countering these threats. For further insights and practical demonstrations, explore our [in-depth video tutorial](https://www.youtube.com/watch?v=dQw4w9WgXcQ) on advanced malware evasion techniques.
 
 {{< callout type="warning" emoji="⚠️" >}}
 **Disclaimer:** The techniques and code samples in this post are provided for educational and research purposes only. They demonstrate methods used by malware for evasion and should never be applied for any malicious activities.
