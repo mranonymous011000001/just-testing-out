@@ -266,15 +266,15 @@ Modern malware implements multiple layers of evasion. Beyond detecting VMs and s
 
 {{% steps %}}
 
-### 1. **Self-Encryption and Packing:**  
+#### **Self-Encryption and Packing:**  
    - Encrypt code so it appears as gibberish until runtime decryption occurs.
-### 2. **Debugger Detection:**  
+#### **Debugger Detection:**  
    - Use both standard API calls and timing discrepancies to determine if a debugger is present.
-### 3. **Delayed Execution:**  
+#### **Delayed Execution:**  
    - Implement timers or conditional loops to delay malicious behavior until after analysis.
-### 4. **Code Obfuscation:**  
+#### **Code Obfuscation:**  
    - Insert redundant code and reformat control flows to impede reverse engineering.
-### 5. **API Hammering & Process Injection:**  
+#### **API Hammering & Process Injection:**  
    - Rapidly call system APIs to obscure behavior.
    - Inject code into trusted processes using methods like `VirtualAllocEx`, `WriteProcessMemory`, and `CreateRemoteThread`.
 
