@@ -331,7 +331,7 @@ Obfuscation techniques include:
 
 {{< /details >}}
 
-## {{< icon "exclamation-triangle" >}} Key Considerations
+## Key Considerations
 
 Below are some critical issues to be aware of when analyzing malware or developing countermeasures:
 
