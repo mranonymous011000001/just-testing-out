@@ -30,7 +30,7 @@ excludeSearch: true
 toc: false
 ---
 
-This article offers techniques used by malwares detects virtualized environments and sandboxes and more!
+This article offers techniques used by malwares to detects virtualized environments and sandboxes and more!
 <!--more-->
 
 
