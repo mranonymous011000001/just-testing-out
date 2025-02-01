@@ -7,6 +7,25 @@ authors:
     image: https://github.com/BlackTechX011.png
 tags:
   - Guide
+  - Malware Analysis
+  - Cybersecurity
+  - Sandbox Evasion
+  - Virtual Machine Detection
+  - Advanced Persistent Threats (APT)
+  - Reverse Engineering
+  - Threat Intelligence
+  - Malware Techniques
+  - Anti-Analysis Techniques
+  - Security Research
+  - Incident Response
+  - Red Teaming
+  - Blue Teaming
+  - Endpoint Security
+  - Behavioral Analysis
+  - Static Analysis
+  - Dynamic Analysis
+  - Obfuscation Techniques
+  - Zero-Day Exploits
 excludeSearch: true
 toc: false
 ---
