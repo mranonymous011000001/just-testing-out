@@ -5,9 +5,6 @@ authors:
   - name: BlackTechX011
     link: https://github.com/BlackTechX011
     image: https://github.com/BlackTechX011.png
-  - name: Octocat
-    link: https://github.com/octocat
-    image: https://github.com/octocat.png
 tags:
   - Guide
 excludeSearch: true
@@ -282,7 +279,7 @@ Modern malware implements multiple layers of evasion. Beyond detecting VMs and s
 
 {{% /details %}}
 
-### Example: Debugger Detection in Python
+{{% details title="Example: Debugger Detection in Python" %}}
 
 ```python
 import ctypes
@@ -304,7 +301,9 @@ if is_debugger_present():
     exit()
 ```
 
-### Example: Delayed Execution with Sleep and Detailed Flowchart
+{{% /details %}}
+
+{{% details title="Example: Delayed Execution with Sleep and Detailed WorkFlow" %}}
 
 ```python
 import time
@@ -327,6 +326,8 @@ flowchart TD
 ```
 
 *Diagram 2: Detailed Flow of Delayed Execution*
+
+{{% /details %}}
 
 ---
 
